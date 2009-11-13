@@ -1,14 +1,14 @@
 %======================================================================
 %                    S T R U C T 2 A N T S . M 
 %                    doc: Thu Oct 20 11:48:17 2005
-%                    dlm: Tue Apr 15 14:43:45 2008
+%                    dlm: Thu Oct 22 14:05:24 2009
 %                    (c) 2005 A.M. Thurnherr
-%                    uE-Info: 16 56 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 15 40 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export Matlab structure to ANTS file
 %
-% USAGE: struct2ANTS(struct,outFileName)
+% USAGE: struct2ANTS(struct,depFileName,outFileName)
 %
 % NOTES:
 %	- scalar strings & numbers become %PARAMs
@@ -23,11 +23,17 @@
 %  Nov 16, 2007: - replaced cell2mat() by char()
 %  Apr 15, 2008: - added vector-compatibility test
 %				 - cosmetics
+%  Oct 12, 2009: - added ifn (ANTS 4.0: deps)
+%  Oct 13, 2009: - allowed for NULL ifn, ofn
 
-function [] = struct2ANTS(struct,ofn)
+function [] = struct2ANTS(struct,ifn,ofn)
 	[ldef,dta] = parseStruct(struct,'','',[],ofn);
 	save /tmp/.struct2ANTS dta -ASCII -DOUBLE;
-	system(sprintf('list -M%%.15g %s /tmp/.struct2ANTS > %s',ldef,ofn));
+	if length(ofn) == 0
+		system(sprintf('list -M%%.15g -d,%s, %s /tmp/.struct2ANTS',ifn,ldef));
+	else
+		system(sprintf('list -M%%.15g -d,%s, %s /tmp/.struct2ANTS > %s',ifn,ldef,ofn));
+	end
 
 %======================================================================
 

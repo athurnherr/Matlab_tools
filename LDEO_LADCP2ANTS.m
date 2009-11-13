@@ -1,14 +1,14 @@
 %======================================================================
 %                    L D E O _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Thu Apr 23 21:49:36 2009
+%                    dlm: Mon Oct 12 22:47:23 2009
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 154 39 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 155 47 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export LDEO LADCP output to ANTS file
 %
-% USAGE: LDEO_LADCP2ANTS(dr,p,outBaseName)
+% USAGE: LDEO_LADCP2ANTS(dr,f,p,outBaseName)
 %
 
 % HISTORY:
@@ -21,8 +21,9 @@
 %  Nov  9, 2006: - added additional time output (requiring p input)
 %  Jul 17, 2008: - added cruise, software, magdecl, procdir info
 %  Apr 23, 2009: - added globarl var EXPORT_CTD_DATA
+%  Oct 12, 2009: - adapted to new struct2ANTS
 
-function [] = LDEO_LADCP2ANTS(dr,p,obn)
+function [] = LDEO_LADCP2ANTS(dr,f,p,obn)
 
 	%----------------------------------------------------------------------
 	% INVERSE SOLUTION
@@ -73,7 +74,7 @@ function [] = LDEO_LADCP2ANTS(dr,p,obn)
 	prof.temp  = dr.ctd_t;
 	prof.salin = dr.ctd_s;
 	
-	struct2ANTS(prof,sprintf('%s.prof',obn));
+	struct2ANTS(prof,sprintf('%s.mat',f.res),sprintf('%s.prof',obn));
 
 	%----------------------------------------------------------------------
 	% SADCP
@@ -103,7 +104,7 @@ function [] = LDEO_LADCP2ANTS(dr,p,obn)
 			SADCP.err	= dr.uerr_sadcp;
 		end
 		
-		struct2ANTS(SADCP,sprintf('%s.SADCP',obn));
+		struct2ANTS(SADCP,sprintf('%s.mat',f.res),sprintf('%s.SADCP',obn));
 		
 	end
 
@@ -129,7 +130,7 @@ function [] = LDEO_LADCP2ANTS(dr,p,obn)
 		BT.v		= dr.vbot;
 		BT.err		= dr.uerrbot;
 		
-		struct2ANTS(BT,sprintf('%s.BT',obn));
+		struct2ANTS(BT,sprintf('%s.mat',f.res),sprintf('%s.BT',obn));
 	end
 	
 	%----------------------------------------------------------------------
@@ -151,5 +152,5 @@ function [] = LDEO_LADCP2ANTS(dr,p,obn)
 		CTD.temp  = dr.ctd_t;
 		CTD.salin = dr.ctd_s;
 
-		struct2ANTS(CTD,sprintf('%s.CTD',obn));
+		struct2ANTS(CTD,sprintf('%s.mat',f.res),sprintf('%s.CTD',obn));
 	end

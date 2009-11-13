@@ -1,9 +1,9 @@
 %======================================================================
 %                    I F M _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Tue Aug 26 12:39:11 2008
+%                    dlm: Mon Oct 12 22:58:20 2009
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 17 29 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 68 0 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export IfM-GEOMAR LADCP output to ANTS file
@@ -15,6 +15,7 @@
 %	Jul 21, 2008: - created from [LDEO_LADCP2ANTS.m]
 %	Jul 22, 2008: - cosmetics
 %	Aug 26, 2008: - cosmetics
+%	Oct 12, 2009: - adapted to new struct2ANTS
 
 function [] = IfM_LADCP2ANTS(dr,p,obn)
 
@@ -64,7 +65,7 @@ function [] = IfM_LADCP2ANTS(dr,p,obn)
 		prof.ensemble_vel_err = dr.ensemble_vel_err;
 	end
 
-	struct2ANTS(prof,sprintf('%s.prof',obn));
+	struct2ANTS(prof,sprintf('%s.mat',f.res),sprintf('%s.prof',obn));
 
 	%----------------------------------------------------------------------
 	% SADCP
@@ -94,7 +95,7 @@ function [] = IfM_LADCP2ANTS(dr,p,obn)
 			SADCP.err	= dr.uerr_sadcp;
 		end
 		
-		struct2ANTS(SADCP,sprintf('%s.SADCP',obn));
+		struct2ANTS(SADCP,sprintf('%s.mat',f.res),sprintf('%s.SADCP',obn));
 		
 	end
 
@@ -120,7 +121,7 @@ function [] = IfM_LADCP2ANTS(dr,p,obn)
 		BT.v		= dr.vbot;
 		BT.err		= dr.uerrbot;
 		
-		struct2ANTS(BT,sprintf('%s.BT',obn));
+		struct2ANTS(BT,sprintf('%s.mat',f.res),sprintf('%s.BT',obn));
 	end
 	
 

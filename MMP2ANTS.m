@@ -1,9 +1,9 @@
 %======================================================================
 %                    M M P 2 A N T S . M 
 %                    doc: Tue Apr 21 17:31:52 2009
-%                    dlm: Mon May 18 15:25:49 2009
+%                    dlm: Tue Oct 13 10:04:17 2009
 %                    (c) 2009 A.M. Thurnherr
-%                    uE-Info: 94 41 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 16 54 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 
 % HISTORY:
@@ -13,6 +13,7 @@
 %				  - added depth calc
 %	May 18, 2009: - added export of raw ACM file
 %				  - BUG: hdg actually was vel_dir
+%	Oct 13, 2009: - adapted to new struct2ANTS (V4.0: dependencies)
 
 function mmp2ANTS(plist,epoch)
 
@@ -98,7 +99,7 @@ for p = plist
 		prof.dpdt	= dpdtave(igood);
 		prof.ACM_Nsamp = ascan2(igood) - ascan1(igood);
 	    
-	    struct2ANTS(prof,sprintf('%04d.prof',p));
+	    struct2ANTS(prof,sprintf('grd%04d.mat',p),sprintf('%04d.prof',p));
 	    
 	end % if grd file loaded
 
@@ -125,7 +126,7 @@ for p = plist
 		ACM.aTx = aTx;
 		ACM.aTy = aTy;
 
-	    struct2ANTS(ACM,sprintf('%04d.ACM',p));
+	    struct2ANTS(ACM,sprintf('raw%04d.mat',p),sprintf('%04d.ACM',p));
 	    
 	end % if grd file loaded
 
