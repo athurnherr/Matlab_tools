@@ -1,9 +1,9 @@
 %======================================================================
 %                    S T R U C T 2 A N T S . M 
 %                    doc: Thu Oct 20 11:48:17 2005
-%                    dlm: Tue Feb 21 14:30:01 2012
+%                    dlm: Mon Mar 18 16:17:52 2013
 %                    (c) 2005 A.M. Thurnherr
-%                    uE-Info: 93 0 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 96 20 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export Matlab structure to ANTS file
@@ -15,6 +15,7 @@
 %	- scalar strings & numbers become %PARAMs
 %	- row and column vectors (which can be mixed) become FIELDs
 %	- incompatible vectors, as well as other data types, are skipped
+%	- set global STRUCT2ANTS.verb to true to suppress diagnostic messages
 
 % HISTORY:
 %  Oct 20, 2005: - created
@@ -37,6 +38,7 @@
 %  Feb 21, 2012: - removed double quoting of % and $
 %				 - manually merged two versions
 %				 - re-added diagnostic messages about skipped incompatible vectors
+%  Mar 18, 2013: - added global STRUCT2ANTS.verb
 
 function [] = struct2ANTS(struct,deps,ofn)
 
@@ -64,6 +66,11 @@ function [] = struct2ANTS(struct,deps,ofn)
 
 function [ldef,dta] = parseStruct(struct,ldef,fpref,dta,ofn);
 
+	global STRUCT2ANTS;
+	if ~isfield(STRUCT2ANTS,'verb')
+		STRUCT2ANTS.verb = 1;
+	end
+
 	fname = fieldnames(struct);
 	for i=1:length(fname)
 		fns = char(fname(i));
@@ -86,7 +93,7 @@ function [ldef,dta] = parseStruct(struct,ldef,fpref,dta,ofn);
 				elseif c==1 && length(f)==ndta
 					ldef = sprintf('%s%s%s= ',ldef,fpref,fns);
 					dta = [dta,f];
-				else
+				elseif STRUCT2ANTS.verb > 0
 					disp(sprintf('%s: incompatible %d x %d array %s%s skipped',ofn,r,c,fpref,fns));
 				end
 			end
