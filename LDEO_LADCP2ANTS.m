@@ -1,9 +1,9 @@
 %======================================================================
 %                    L D E O _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Mon Jun 24 10:37:03 2013
+%                    dlm: Thu Nov 21 11:25:26 2013
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 30 40 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 59 0 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export LDEO LADCP output to ANTS file
@@ -14,51 +14,53 @@
 % HISTORY:
 %  Jan 22, 2006: - created
 %  Feb  4, 2006: - added BT & SADCP profiles
-%  Feb  8, 2006: - made compatible with V7
+%  Feb  8, 2006: - made compatible with ANTS V7
 %  Feb 26, 2006: - made ensemble_vel_err optional (not set on ps.shear = 2)
 %  Apr 25, 2006: - suppress output of empty SADCP,BT files
 %  Aug 21, 2006: - added additional lat/lon output
 %  Nov  9, 2006: - added additional time output (requiring p input)
 %  Jul 17, 2008: - added cruise, software, magdecl, procdir info
-%  Apr 23, 2009: - added globarl var EXPORT_CTD_DATA
+%  Apr 23, 2009: - added global var EXPORT_CTD_DATA
 %  Oct 12, 2009: - adapted to new struct2ANTS
 %  Mar 18, 2013: - added support for global STRUCT2ANTS.verb
 %  Jun 24, 2013: - added blen, nbin, blnk, dist to output (DL/UL separately); V10
-%				 - added %depth_resolution %ADCP_superens_dz to output, requiring ps as
-%			   	   additional input
+%                - added %depth_resolution %ADCP_superens_dz to output, requiring ps as
+%                  additional input
+%  Nov 10, 2013: - added prof.dayNo
 
 function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 
-	global STRUCT2ANTS;													% suppress diagnostic messages
-	STRUCT2ANTS.verb = 0;
+    global STRUCT2ANTS;                                                 % suppress diagnostic messages
+    STRUCT2ANTS.verb = 0;
 
-	%----------------------------------------------------------------------
-	% INVERSE SOLUTION
-	%----------------------------------------------------------------------
+    %----------------------------------------------------------------------
+    % INVERSE SOLUTION
+    %----------------------------------------------------------------------
 
-	prof.name = dr.name;
-	prof.cruise = p.cruise_id;
-	prof.software = p.software;
-	prof.magdecl = p.drot;
-	prof.procdir = pwd;
+    prof.name = dr.name;
+    prof.cruise = p.cruise_id;
+    prof.software = p.software;
+    prof.magdecl = p.drot;
+    prof.procdir = pwd;
 
-	prof.DL_bin_length  = p.blen_d;
-	prof.DL_bins		= p.nbin_d;
-	prof.DL_blanking	= p.blnk_d;
-	prof.DL_bin1_dist	= p.dist_d;
+    prof.DL_bin_length  = p.blen_d;
+    prof.DL_bins        = p.nbin_d;
+    prof.DL_blanking    = p.blnk_d;
+    prof.DL_bin1_dist   = p.dist_d;
 
-	if isfield(p,'nbin_u')
-		prof.UL_bin_length	= p.blen_u;
-		prof.UL_bins		= p.nbin_u;
-		prof.UL_blanking	= p.blnk_u;
-	    prof.UL_bin1_dist   = p.dist_u;
-	end
+    if isfield(p,'nbin_u')
+        prof.UL_bin_length  = p.blen_u;
+        prof.UL_bins        = p.nbin_u;
+        prof.UL_blanking    = p.blnk_u;
+        prof.UL_bin1_dist   = p.dist_u;
+    end
 
-	prof.ADCP_superens_dz = p.avdz;
+    prof.ADCP_superens_dz = p.avdz;
 	prof.depth_resolution = ps.dz;
 	
 	prof.start_date  = sprintf('%d/%02d/%02d',p.time_start(1),p.time_start(2),p.time_start(3));
 	prof.start_time	 = sprintf('%02d:%02d:%02d',p.time_start(4),p.time_start(5),p.time_start(6));
+	prof.dayNo       = datenum(p.time_start) - datenum(p.time_start(1),1,1) + 1;
 
 	prof.end_date    = sprintf('%d/%02d/%02d',p.time_end(1),p.time_end(2),p.time_end(3));
 	prof.end_time	 = sprintf('%02d:%02d:%02d',p.time_end(4),p.time_end(5),p.time_end(6));
