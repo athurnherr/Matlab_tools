@@ -1,9 +1,9 @@
 %======================================================================
 %                    L D E O _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Mon Oct 12 22:47:23 2009
+%                    dlm: Sun Nov 10 04:39:34 2013
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 155 47 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 41 76 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export LDEO LADCP output to ANTS file
@@ -14,14 +14,15 @@
 % HISTORY:
 %  Jan 22, 2006: - created
 %  Feb  4, 2006: - added BT & SADCP profiles
-%  Feb  8, 2006: - made compatible with V7
+%  Feb  8, 2006: - made compatible with ANTS V7
 %  Feb 26, 2006: - made ensemble_vel_err optional (not set on ps.shear = 2)
 %  Apr 25, 2006: - suppress output of empty SADCP,BT files
 %  Aug 21, 2006: - added additional lat/lon output
 %  Nov  9, 2006: - added additional time output (requiring p input)
 %  Jul 17, 2008: - added cruise, software, magdecl, procdir info
-%  Apr 23, 2009: - added globarl var EXPORT_CTD_DATA
+%  Apr 23, 2009: - added global var EXPORT_CTD_DATA
 %  Oct 12, 2009: - adapted to new struct2ANTS
+%  Nov 10, 2013: - added prof.dayNo
 
 function [] = LDEO_LADCP2ANTS(dr,f,p,obn)
 
@@ -37,6 +38,7 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,obn)
 	
 	prof.start_date  = sprintf('%d/%02d/%02d',p.time_start(1),p.time_start(2),p.time_start(3));
 	prof.start_time	 = sprintf('%02d:%02d:%02d',p.time_start(4),p.time_start(5),p.time_start(6));
+	prof.dayNo       = datenum(p.time_start) - datenum(p.time_start(1),1,1) + 1;
 
 	prof.end_date    = sprintf('%d/%02d/%02d',p.time_end(1),p.time_end(2),p.time_end(3));
 	prof.end_time	 = sprintf('%02d:%02d:%02d',p.time_end(4),p.time_end(5),p.time_end(6));
