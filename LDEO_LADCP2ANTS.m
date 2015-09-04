@@ -1,9 +1,9 @@
 %======================================================================
 %                    L D E O _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Thu Nov 21 11:25:26 2013
+%                    dlm: Thu Jul 23 10:15:26 2015
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 59 0 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 102 0 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export LDEO LADCP output to ANTS file
@@ -27,6 +27,7 @@
 %                - added %depth_resolution %ADCP_superens_dz to output, requiring ps as
 %                  additional input
 %  Nov 10, 2013: - added prof.dayNo
+%  Jun 12, 2015: - made dr.shiplat & CTD fields optional
 
 function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 
@@ -67,13 +68,15 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 
 	prof.median_time = sprintf('%02d:%02d:%02d',dr.date(4),dr.date(5),dr.date(6));
 
-	prof.lat 		= dr.lat; 			  prof.lon  	  = dr.lon;				% (start+end)/2
-	prof.mean_lat 	= mean(dr.shiplat);   prof.mean_lon   = mean(dr.shiplon);
-	prof.median_lat = median(dr.shiplat); prof.median_lon = median(dr.shiplon);
-	prof.start_lat	= dr.shiplat(1);	  prof.start_lon  = dr.shiplon(1);
-	prof.end_lat	= dr.shiplat(end);	  prof.end_lon	  = dr.shiplon(end);
-	i_bot = find(dr.zctd==min(dr.zctd));
-	prof.bot_lat	= dr.shiplat(i_bot);  prof.bot_lon    = dr.shiplon(i_bot);
+	prof.lat = dr.lat; prof.lon = dr.lon;				% (start+end)/2
+	if existf(dr,'shiplat')
+		prof.mean_lat	= mean(dr.shiplat);   prof.mean_lon   = mean(dr.shiplon);
+		prof.median_lat = median(dr.shiplat); prof.median_lon = median(dr.shiplon);
+		prof.start_lat	= dr.shiplat(1);	  prof.start_lon  = dr.shiplon(1);
+		prof.end_lat	= dr.shiplat(end);	  prof.end_lon	  = dr.shiplon(end);
+		i_bot = find(dr.zctd==min(dr.zctd));
+	    prof.bot_lat    = dr.shiplat(i_bot);  prof.bot_lon    = dr.shiplon(i_bot);
+	end	    
 
 	prof.depth = dr.z;
 	prof.max_depth = max(prof.depth);
@@ -95,8 +98,10 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 		prof.ensemble_vel_err = dr.ensemble_vel_err;
 	end
 
-	prof.temp  = dr.ctd_t;
-	prof.salin = dr.ctd_s;
+	if existf(dr,'ctd_t')
+		prof.temp  = dr.ctd_t;
+		prof.salin = dr.ctd_s;
+	end
 	
 	struct2ANTS(prof,sprintf('%s.mat',f.res),sprintf('%s.prof',obn));
 
@@ -114,10 +119,12 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 		SADCP.date = sprintf('%d/%02d/%02d',dr.date(1),dr.date(2),dr.date(3)); % median
 		SADCP.time = prof.median_time;
 		SADCP.lat  = prof.lat; SADCP.lon  = prof.lon;
-		SADCP.start_lat  = prof.start_lat; SADCP.start_lon  = prof.start_lon;
-		SADCP.end_lat  = prof.end_lat; SADCP.end_lon  = prof.end_lon;
-		SADCP.mean_lat  = prof.mean_lat; SADCP.mean_lon  = prof.mean_lon;
-		SADCP.median_lat  = prof.median_lat; SADCP.median_lon  = prof.median_lon;
+		if existf(prof,'start_lat')
+			SADCP.start_lat  = prof.start_lat; SADCP.start_lon	= prof.start_lon;
+			SADCP.end_lat  = prof.end_lat; SADCP.end_lon  = prof.end_lon;
+			SADCP.mean_lat	= prof.mean_lat; SADCP.mean_lon  = prof.mean_lon;
+	        SADCP.median_lat  = prof.median_lat; SADCP.median_lon  = prof.median_lon;
+	    end
 
 		SADCP.depth = dr.z_sadcp;
 		SADCP.max_depth = max(dr.z_sadcp);
@@ -144,8 +151,13 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 		BT.procdir = prof.procdir;
 		BT.date = sprintf('%d/%02d/%02d',dr.date(1),dr.date(2),dr.date(3)); % median
 		BT.time = prof.median_time;
-		BT.lat  = prof.bot_lat;
-		BT.lon  = prof.bot_lon;
+		if existf(prof,'bot_lat')
+			BT.lat  = prof.bot_lat;
+			BT.lon  = prof.bot_lon;
+		else
+			BT.lat = prof.lat;
+			BT.lon = prof.lon;
+		end
 
 		BT.depth = dr.zbot;
 		BT.max_depth = max(dr.zbot);
@@ -169,8 +181,8 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 		CTD.procdir = prof.procdir;
 		CTD.date = sprintf('%d/%02d/%02d',dr.date(1),dr.date(2),dr.date(3)); % median
 		CTD.time = prof.median_time;
-		CTD.lat  = prof.bot_lat;
-		CTD.lon  = prof.bot_lon;
+		CTD.lat  = prof.lat;
+		CTD.lon  = prof.lon;
 		CTD.ITS = 90;
 		CTD.depth = dr.z;
 		CTD.temp  = dr.ctd_t;
