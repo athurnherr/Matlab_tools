@@ -1,9 +1,9 @@
 %======================================================================
 %                    M M P 2 A N T S . M 
 %                    doc: Tue Apr 21 17:31:52 2009
-%                    dlm: Tue Oct 13 10:04:17 2009
+%                    dlm: Mon Nov  9 11:02:27 2015
 %                    (c) 2009 A.M. Thurnherr
-%                    uE-Info: 16 54 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 152 28 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 
 % HISTORY:
@@ -114,6 +114,11 @@ for p = plist
 
 		disp(sprintf('exporting raw data %04d...',p));				% process
 		
+		ACM.start_time = pstart;
+		ACM.start_date = psdate;
+		ACM.stop_time  = pstop;
+		ACM.stop_date  = pedate;
+
 		ACM.Vab = Vab;
 		ACM.Vcd = Vcd;
 		ACM.Vef = Vef;
@@ -128,6 +133,30 @@ for p = plist
 
 	    struct2ANTS(ACM,sprintf('raw%04d.mat',p),sprintf('%04d.ACM',p));
 	    
-	end % if grd file loaded
+		CTD.start_time = pstart;
+		CTD.start_date = psdate;
+		CTD.stop_time  = pstop;
+		CTD.stop_date  = pedate;
+
+		CTD.cond 	= ccond;
+		CTD.press	= cpres;
+		CTD.temp	= ctemp;
+
+	    struct2ANTS(CTD,sprintf('raw%04d.mat',p),sprintf('%04d.CTD',p));
+	    
+		ENG.start_time = pstart;
+		ENG.start_date = psdate;
+		ENG.stop_time  = pstop;
+		ENG.stop_date  = pedate;
+
+		ENG.time	   = engtime;
+		ENG.press	   = epres;
+		ENG.current	   = ecurr;
+		ENG.voltage	   = evolt;
+		ENG.dpdt	   = edpdt;
+
+	    struct2ANTS(ENG,sprintf('raw%04d.mat',p),sprintf('%04d.ENG',p));
+
+	end % if raw file loaded
 
 end % for p

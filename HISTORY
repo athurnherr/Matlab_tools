@@ -1,0 +1,16 @@
+======================================================================
+                    H I S T O R Y 
+                    doc: Fri Jan 12 17:34:45 2018
+                    dlm: Fri Jan 12 17:39:14 2018
+                    (c) 2018 A.M. Thurnherr
+                    uE-Info: 15 0 NIL 0 0 72 3 2 4 NIL ofnI
+======================================================================
+
+Jan 12, 2018:
+	- started HISTORY
+	- removed startup.m, because it causes problems with current Matlab
+	  versions when this dir is added to the path (startup is loaded) on
+	  other people's machines, because of local path names
+	- other mods and additions
+	- updated to V1 in [.hg/hgrc]
+	  

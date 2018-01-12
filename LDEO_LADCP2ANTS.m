@@ -1,9 +1,9 @@
 %======================================================================
 %                    L D E O _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Thu Jul 23 10:15:26 2015
+%                    dlm: Sun Feb 12 18:48:25 2017
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 102 0 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 31 43 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export LDEO LADCP output to ANTS file
@@ -28,6 +28,7 @@
 %                  additional input
 %  Nov 10, 2013: - added prof.dayNo
 %  Jun 12, 2015: - made dr.shiplat & CTD fields optional
+%  Feb 12, 2017: - made backward compatible
 
 function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 
@@ -44,10 +45,12 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
     prof.magdecl = p.drot;
     prof.procdir = pwd;
 
-    prof.DL_bin_length  = p.blen_d;
-    prof.DL_bins        = p.nbin_d;
-    prof.DL_blanking    = p.blnk_d;
-    prof.DL_bin1_dist   = p.dist_d;
+	if isfield(p,'blen_d')
+	    prof.DL_bin_length  = p.blen_d;
+    	prof.DL_bins        = p.nbin_d;
+	    prof.DL_blanking    = p.blnk_d;
+	    prof.DL_bin1_dist   = p.dist_d;
+	end
 
     if isfield(p,'nbin_u')
         prof.UL_bin_length  = p.blen_u;
