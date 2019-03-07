@@ -1,9 +1,9 @@
 %======================================================================
 %                    E X P O R T _ L A D C P . M 
 %                    doc: Tue Sep 16 12:04:42 2008
-%                    dlm: Fri Nov 13 13:16:26 2009
+%                    dlm: Thu Mar  7 10:49:43 2019
 %                    (c) 2008 A.M. Thurnherr
-%                    uE-Info: 33 30 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 23 63 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % Synopsis: export list of LADCP stations to ANTS
@@ -20,6 +20,7 @@
 % HISTORY:
 %	Sep 16, 2008: - created
 %	Nov 13, 2009: - adapted to new LDEO_LADCP2ANTS
+%	Mar  7, 2019: - BUG: LDEO_LADCP2ANTS had different arg list
 
 function [] = export_LADCP(stns)
 
@@ -32,7 +33,7 @@ for s = stns
 		elseif isfield(p,'magdev')	% IfM processed
 			IfM_LADCP2ANTS(dr,p,bn);
 		else						% LDEO processed
-			LDEO_LADCP2ANTS(dr,f,p,bn);
+			LDEO_LADCP2ANTS(dr,f,p,ps,bn);
 		end
 	else
 		disp(sprintf('skipping station %d',s));
