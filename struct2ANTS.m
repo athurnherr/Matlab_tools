@@ -1,9 +1,9 @@
 %======================================================================
 %                    S T R U C T 2 A N T S . M 
 %                    doc: Thu Oct 20 11:48:17 2005
-%                    dlm: Mon Mar 18 16:17:52 2013
+%                    dlm: Fri Apr 30 09:18:22 2021
 %                    (c) 2005 A.M. Thurnherr
-%                    uE-Info: 96 20 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 63 0 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export Matlab structure to ANTS file

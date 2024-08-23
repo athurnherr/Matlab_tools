@@ -1,9 +1,9 @@
 %======================================================================
 %                    L D E O _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Sun Feb 12 18:48:25 2017
+%                    dlm: Tue Feb 21 12:57:04 2023
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 31 43 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 32 50 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export LDEO LADCP output to ANTS file
@@ -29,6 +29,7 @@
 %  Nov 10, 2013: - added prof.dayNo
 %  Jun 12, 2015: - made dr.shiplat & CTD fields optional
 %  Feb 12, 2017: - made backward compatible
+%  Feb 21, 2023: - added target_strength to output
 
 function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 
@@ -97,6 +98,7 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 	prof.samp  = dr.nvel;
 	prof.err   = dr.uerr;
 	prof.range = dr.range;
+	prof.target_strength = dr.ts;
 	if existf(dr,'ensemble_vel_err')
 		prof.ensemble_vel_err = dr.ensemble_vel_err;
 	end
