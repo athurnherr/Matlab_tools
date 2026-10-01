@@ -1,9 +1,9 @@
 ======================================================================
                     H I S T O R Y 
                     doc: Fri Jan 12 17:34:45 2018
-                    dlm: Fri Jan 12 17:39:14 2018
+                    dlm: Thu Oct  1 16:26:11 2026
                     (c) 2018 A.M. Thurnherr
-                    uE-Info: 15 0 NIL 0 0 72 3 2 4 NIL ofnI
+                    uE-Info: 27 30 NIL 0 0 72 3 2 4 NIL ofnI
 ======================================================================
 
 Jan 12, 2018:
@@ -13,4 +13,16 @@ Jan 12, 2018:
 	  other people's machines, because of local path names
 	- other mods and additions
 	- updated to V1 in [.hg/hgrc]
+
+Mar 7, 2019:
+	- added export_LADCP.m
+
+Jan 2, 2020:
+	- added GEOMAR_MSS2ANTS.m
+
+Jun 17, 2026:
+	- [LDEO_LADCP2ANTS.m] additional output fields
+
+Oct 1, 2026:
+	- published V1.2 on GitHUB
 	  

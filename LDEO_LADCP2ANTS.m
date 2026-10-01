@@ -1,9 +1,9 @@
 %======================================================================
 %                    L D E O _ L A D C P 2 A N T S . M 
 %                    doc: Sun Jan 22 15:19:00 2006
-%                    dlm: Tue Feb 21 12:57:04 2023
+%                    dlm: Wed Jun 17 10:36:36 2026
 %                    (c) 2006 A.M. Thurnherr
-%                    uE-Info: 32 50 NIL 0 0 72 2 2 4 NIL ofnI
+%                    uE-Info: 100 33 NIL 0 0 72 2 2 4 NIL ofnI
 %======================================================================
 %
 % export LDEO LADCP output to ANTS file
@@ -30,6 +30,8 @@
 %  Jun 12, 2015: - made dr.shiplat & CTD fields optional
 %  Feb 12, 2017: - made backward compatible
 %  Feb 21, 2023: - added target_strength to output
+%  Jun 17, 2026: - added %water_depth & hab to output
+%				 - added HKE to output
 
 function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 
@@ -85,12 +87,17 @@ function [] = LDEO_LADCP2ANTS(dr,f,p,ps,obn)
 	prof.depth = dr.z;
 	prof.max_depth = max(prof.depth);
 	
+	prof.water_depth = p.zbottom;
+	prof.hab 	= p.zbottom - dr.z;
+
 	prof.u	   = dr.u;
 	prof.dn_u  = dr.u_do;
 	prof.up_u  = dr.u_up;
 	prof.v     = dr.v;
 	prof.dn_v  = dr.v_do;
 	prof.up_v  = dr.v_up;
+
+	prof.HKE   = dr.u.^2 + dr.v.^2;
 	
 	prof.u_fromshear = dr.u_shear_method;
 	prof.v_fromshear = dr.v_shear_method;
